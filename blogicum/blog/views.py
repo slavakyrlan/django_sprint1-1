@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render
 
 posts = [
@@ -46,17 +47,19 @@ posts = [
 posts_dict = {post['id']: post for post in posts}
 
 
-# Create your views here.
 def index(request):
     return render(request,
                   'blog/index.html',
                   {'posts': posts})
 
 
-def post_detail(request, id):
+def post_detail(request, post_id):
+    post = posts_dict.get(post_id)
+    if post is None:
+        raise Http404("Такой пост не обнаружен")
     return render(request,
                   'blog/detail.html',
-                  {"post": posts[id]})
+                  {"post": posts[post_id]})
 
 
 def category_posts(request, category_slug):
