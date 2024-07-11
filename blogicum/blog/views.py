@@ -54,8 +54,7 @@ def index(request):
 
 
 def post_detail(request, post_id):
-    post = posts_dict.get(post_id)
-    if post is None:
+    if post_id not in posts_dict:
         raise Http404("Такой пост не обнаружен")
     return render(request,
                   'blog/detail.html',
